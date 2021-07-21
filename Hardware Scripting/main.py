@@ -1,6 +1,5 @@
 # Importing Libraries
 import time
-from typing_extensions import runtime
 import RPi.GPIO as GPIO
 from twilio.rest import Client
 import requests
