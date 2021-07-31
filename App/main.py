@@ -9,7 +9,7 @@ import json
 import requests
 from passlib.hash import sha256_crypt
 from datetime import datetime
-from kivy_garden.mapview import MapView
+import os
 
 # Fetching credentials from JSON
 with open('../credentials.json') as cred:
@@ -458,28 +458,64 @@ ScreenManager:
                     TwoLineAvatarIconListItem:
                         text: 'GovNaB'
                         secondary_text: 'Your AI Bot'
+                        on_release:
+                            root.manager.current = 'ChatBotScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'robot-happy-outline'
+                            on_release:
+                                root.manager.current = 'ChatBotScreen'
+                                root.manager.transition.direction = 'left'
                     OneLineIconListItem:
                         text: 'Privacy Policy'
+                        on_release:
+                            root.manager.current = 'PrivacyScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'security'
+                            on_release:
+                                root.manager.current = 'PrivacyScreen'
+                                root.manager.transition.direction = 'left'
                     OneLineIconListItem:
                         text: 'Profile'
+                        on_release:
+                            root.manager.current = 'ProfileScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'account-edit'
+                            on_release:
+                                root.manager.current = 'ProfileScreen'
+                                root.manager.transition.direction = 'left'
                     OneLineIconListItem:
                         text: 'About'
+                        on_release:
+                            root.manager.current = 'AboutScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'package'
+                            on_release:
+                                root.manager.current = 'AboutScreen'
+                                root.manager.transition.direction = 'left'
                     OneLineIconListItem:
                         text: 'Traffic Rules'
+                        on_release:
+                            root.manager.current = 'TrafficRulesScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'list-status'
+                            on_release:
+                                root.manager.current = 'TrafficRulesScreen'
+                                root.manager.transition.direction = 'left'
                     OneLineIconListItem:
                         text: 'Contact Us'
+                        on_release:
+                            root.manager.current = 'ContactScreen'
+                            root.manager.transition.direction = 'left'
                         IconLeftWidget:
                             icon: 'email-send'
+                            on_release:
+                                root.manager.current = 'ContactScreen'
+                                root.manager.transit
                     OneLineIconListItem:
                         text: 'Logout'
                         on_release: 
@@ -519,16 +555,41 @@ ScreenManager:
         elevation: 10
         md_bg_color: app.appbarcolor
         left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: ''
+        pos_hint: {'top': 0.875}
+        elevation: 10
+        md_bg_color: 1, 1, 1, 1
+        height: '30dp'
     
     MDFloatingActionButton:
-        icon: 'android'
+        icon: 'map-marker'
         md_bg_color: app.buttoncolor
-        pos_hint: {'center_x': 0.8, 'center_y': 0.2}
-
+        pos_hint: {'center_x': 0.85, 'center_y': 0.15}
+        on_release:
+            root.fetch_latest_loc()
+            map_view.center_on(root.lat, root.lon)
+    
+    MDLabel:
+        text: 'Lat - {0:.4f} : Lon - {1:.4f}'.format(map_marker.lat, map_marker.lon)
+        pos_hint: {'center_y': 0.85}
+        halign: 'center'
+        font_size: '16dp'
+        
 
 # Weather Screen Layout Configurations
 <Weather>:
     name: 'WeatherScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
 
     # Adding ToolBar to Screen
     MDToolbar:
@@ -549,6 +610,14 @@ ScreenManager:
 <Docs>:
     name: 'DocsScreen'
 
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     # Adding ToolBar to Screen
     MDToolbar:
         title: 'Documents'
@@ -568,9 +637,329 @@ ScreenManager:
 <Stats>:
     name: 'StatsScreen'
 
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
     # Adding ToolBar to Screen
     MDToolbar:
         title: 'Statistics'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+# ChatBot Screen Layout Configurations
+<GovNaB>:
+    name: 'ChatBotScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'GovNaB'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<PrivacyPolicy>:
+    name: 'PrivacyScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Privacy Policy'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+<Profile>:
+    name: 'ProfileScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Profile'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<About>:
+    name: 'AboutScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'About'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+    
+
+<AboutRakshak>:
+    name: 'AboutProjectScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'About Rakshak'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+    
+
+<AboutUs>:
+    name: 'AboutUsScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'About Us'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+    
+
+<Person1>:
+    name: 'Person1Screen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Yashasvi Bhatt'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<Person2>:
+    name: 'Person2Screen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Yashvardhan Goel'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<Person3>:
+    name: 'Person3Screen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Dinesh Verma'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+    
+
+<College>:
+    name: 'CollegeScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'GIT'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<TrafficRules>:
+    name: 'TrafficRulesScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Traffic Rules'
+        pos_hint: {'top': 1}
+        elevation: 10
+        md_bg_color: app.appbarcolor
+        left_action_items: [['arrow-left', lambda scr: root.previous()]]
+
+    MDLabel:
+        text: 'Coming Soon'
+        halign: 'center'
+        font_style: 'H2'
+        pos_hint: {'center_y': 0.5}
+
+
+<Contact>:
+    name: 'ContactScreen'
+
+    # Clearing Screen
+    canvas.before:
+        Color:
+            rgba: 1, 1, 1, 1
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    # Adding ToolBar to Screen
+    MDToolbar:
+        title: 'Contact Us'
         pos_hint: {'top': 1}
         elevation: 10
         md_bg_color: app.appbarcolor
@@ -784,7 +1173,7 @@ class Location(Screen):
         try:
             self.map_view.lat, self.map_view.lon = self.loc()
             self.map_marker.lat, self.map_marker.lon = self.loc()
-            self.root.center_on(self.loc())
+            self.map_view.center_on(self.lat, self.lon)
         except Exception as e:
             Clock.schedule_once(self.callback, 0)   
 
@@ -808,6 +1197,33 @@ class Location(Screen):
             self.lon = float(data['loc'].split(',')[1])
         finally:
             return self.lat, self.lon
+
+    def fetch_latest_loc(self):
+        # Fetching Data from Database
+        url = f'{credentials["firebase"]["DBurl"]}.json'
+        db_data = requests.get(url=url).json()
+        # Fetching Login Credentials for Rapid Login
+        with open('./log_credentials.json') as log_cred:
+            log_credentials = json.load(log_cred)
+        user_new_data = db_data[log_credentials['username']]
+        try:
+            self.lat = float(user_new_data['latitude'])
+            self.lon = float(user_new_data['longitude'])
+        except:
+            # Displaying Mobile Location
+
+            # Fetching IP
+            ip_addr = requests.get('https://api.ipify.org').text
+
+            # Fetching Details
+            data = requests.get(f'https://ipinfo.io/{ip_addr}?token={credentials["ipinfo"]["Secret Token"]}').json()
+
+            # Fetching Latitude and Longitude
+            self.lat = float(data['loc'].split(',')[0])
+            self.lon = float(data['loc'].split(',')[1])
+        finally:
+            self.map_marker.lat, self.map_marker.lon = self.lat, self.lon
+            self.map_view.center_on(self.lat, self.lon)
 
     def previous(self):
         self.manager.current = 'UserDashboard'
@@ -833,19 +1249,27 @@ class Stats(Screen):
 
 
 class GovNaB(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
     
     
 class PrivacyPolicy(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
 
 
 class Profile(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
 
 
 class About(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
 
 
 class AboutRakshak(Screen):
@@ -873,11 +1297,15 @@ class College(Screen):
 
 
 class TrafficRules(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
 
 
 class Contact(Screen):
-    pass
+    def previous(self):
+        self.manager.current = 'UserDashboard'
+        self.manager.transition.direction = 'right'
 
 
 class RakshakApp(MDApp):
